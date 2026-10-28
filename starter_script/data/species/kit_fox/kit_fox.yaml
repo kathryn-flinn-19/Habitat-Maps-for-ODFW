@@ -1,0 +1,3 @@
+habitat_model: C:\Users\super\Desktop\capstone\Habitat-Maps-for-ODFW\starter_script\data\species\kit_fox\mKIFOx_CONUS_HabModel_2001v1.json
+species_range: C:\Users\super\Desktop\capstone\Habitat-Maps-for-ODFW\starter_script\data\species\kit_fox\mKIFOx_CONUS_Range_2001v1.shp
+inaturalist_observations: C:\Users\super\Desktop\capstone\Habitat-Maps-for-ODFW\starter_script\data\species\kit_fox\inaturalist\observations-758741.csv
