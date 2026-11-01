@@ -12,7 +12,7 @@ These requirements use MoSCoW, and are listed in order of their importance to th
     - Acceptance criteria 2: deselecting a map layer shall remove its data from the display such that only the data shared by the remaining map layers is displayed.
 - FR-3 (Must: core functionality of the project, required by Project Partner): the user can edit a range map's HUCs by selecting or deselecting what HUCs are to be included in the range map.
     - Acceptance criteria 1: a user interacting with a range map in an "edit" mode can add additional HUCs to a range map by clicking on a HUC while an "add" option is specified.
-    - Acceptance criteria 1: a user interacting with a range map in an "edit" mode can remove HUCs from a range map by clicking on that HUC while a "remove" option is specified.
+    - Acceptance criteria 2: a user interacting with a range map in an "edit" mode can remove HUCs from a range map by clicking on that HUC while a "remove" option is specified.
 - FR-4 (Must: core functionality of the project, required by Project Partner): the user can export an updated range map in a format compatible with ODFW's Compass service.
     - Acceptance criteria 1: an exported range map includes the HUCs added to it and excludes the HUCs removed from it.
     - Acceptance criteria 2: a range map exported from the tool can be uploaded to ODFW's Compass service without being converted to a different file format.
