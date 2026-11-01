@@ -7,9 +7,10 @@ Main front-end library for mapping and data manipulation: GeoPandas, Rasterio
 Front-end Frameworks: React, Python GUI, Svelte
 Backend Libraries/APIs: Shapely, Pyproj, Pyogiro, NumPy, Pandas, Matplotlib, GDAL
 Deployment (Long-term): Locally hosted web app
-Deployment (Fall term): Per the recommendation and agreement with our Project Partner, Logan Sizemore, we plan to not have a deployed prototype and will instead focus our energy on the design process and architecture.
 ```
 **Database and data storage solutions are still being investigated and will be decided.**
+
+Deployment (Fall term): Per the recommendation and agreement with our Project Partner, Logan Sizemore, we plan to not have a deployed prototype and will instead focus our energy on the design process and architecture.
 
 ## User Context Diagram 1
 
