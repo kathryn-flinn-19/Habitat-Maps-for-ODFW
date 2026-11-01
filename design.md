@@ -10,7 +10,7 @@ Deployment (Long-term): Locally hosted web app
 ```
 **Database and data storage solutions are still being investigated and will be decided.**
 
-Deployment (Fall term): Per the recommendation and agreement with our Project Partner, Logan Sizemore, we plan to not have a deployed prototype this term and will instead focus our energy on the design process and architecture.
+Deployment (Fall term): Per the recommendation and agreement with our Project Partner, Logan Sizemore, we do not plan on having a deployed application this term and will instead focus our energy on the design process and architecture.
 
 ## User Context Diagram 1
 
