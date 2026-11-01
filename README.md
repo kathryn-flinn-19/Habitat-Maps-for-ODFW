@@ -28,7 +28,8 @@ cd Habitat-Maps-for-ODFW/starter_script
 
 ### 2. Create the Python environment
 
-Still TBD
+Follow the [starter script setup guide](starter_script/README.md) to install conda and the dependencies (matplotlib, geopandas, rasterio). It also covers adding conda to your PATH on Windows.
+
 ### 3. Download the GAP data
 
 Download each dataset from USGS ScienceBase and unzip it so the folders below exist inside `starter_script/`:
