@@ -4,7 +4,7 @@
 ```
 Front-end and back-end language: Python
 Main front-end library for mapping and data manipulation: GeoPandas, Rasterio
-Front-end Frameworks: React, Python GUI, Svelte
+Front-end Frameworks: Have not made a final decision yet, but React, Python GUI, and Svelte are on the table
 Backend Libraries/APIs: Shapely, Pyproj, Pyogiro, NumPy, Pandas, Matplotlib, GDAL
 Deployment (Long-term): Locally hosted web app
 ```
