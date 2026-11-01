@@ -16,7 +16,7 @@
 | R-4 | Scope beyond the starter script unconfirmed → team builds the wrong features | Business | M/H (goal known, details not; costs terms) | Julie | Mitigate: written questions to ODFW; answers go in `requirements.md` | No answer 2 weeks after asking |
 | R-5 | ODFW install rules unknown → staff may be unable to run the tool | Business | M/H (state PCs often restricted; blocks the objective) | Julie | Mitigate: ask ODFW; feed answer into R-1 | No answer 2 weeks after asking |
 | R-6 | Public repo, no place for partner data → partner data reaches git or an AI tool | Business | M/H (no storage agreed; breaks charter and trust) | Jae | Mitigate: agree storage with ODFW; ignore it in git; restate the rule in `CONTRIBUTING.md` | Partner data arrives before storage is agreed |
-| R-7 | No branch protection; CI checks nothing → broken code merges to `main` | Tech | M/M (noted in Sprint 1; recoverable) | Adison | Mitigate: require PR, 1 approval, passing CI | A commit reaches `main` without review |
+| R-7 | CI only checks out the repo → PRs pass the required check without being tested | Tech | M/M (placeholder workflow; recoverable) | Adison | Mitigate: add a CI job that installs dependencies and imports the script; make it a required check | No real CI job by Sprint 3 review |
 | R-8 | All roles rotate at end of fall → setup knowledge is lost at handoff | Team | M/M (rotation certain; costs 1–2 weeks) | Kathryn | Mitigate: each role writes a handoff note | A note is missing at last fall sprint review |
 | R-9 | Manual data downloads into exact folders → setup fails with unclear errors | Tech | M/M (3 large downloads; costs hours) | Kathryn | Mitigate: startup check naming missing folders | A tester needs help with data setup |
 | R-10 | Public iNaturalist CSV with names, mixed licenses, unverified rows → license or accuracy problems | Business | M/M (public now; costs a takedown) | Jae | Mitigate: trim columns, research grade only, attribute | Map shared before data is trimmed |
@@ -44,3 +44,4 @@ When something is asked, replace the start-by date with who asked and when.
 
 - **R-15 Repository access:** settled at the 10/14 partner meeting.
 - **R-16 Only one person could make a map:** everyone ran the script in Sprint 1.
+- **R-17 No branch protection on `main`:** enabled 10/30; PRs now need 2 approvals.
