@@ -123,7 +123,6 @@ starter_script/
 - [Technical design](docs/design.md)
 - [Risk register](docs/risks.md)
 - [Contributing](CONTRIBUTING.md)
-- [AI context](AGENTS.md)
 
 ## Data sources
 
