@@ -4,6 +4,18 @@ An OSU CS Capstone project for the Oregon Department of Fish and Wildlife (ODFW)
 
 **Status:** design phase (fall 2026). The team is choosing the application's stack; see [Risks](docs/risks.md), R-1. What runs today is the starter script provided by ODFW, which the team has annotated: it turns a USGS Gap Analysis Project (GAP) species habitat model into a habitat map, using three of the project's eleven planned data sources. It runs for one species, the kit fox, and saves a PNG.
 
+## Project layout
+
+```
+.github/workflows/ci.yml   CI (placeholder: checks out the repo only)
+docs/                      Requirements, design and risk register
+starter_script/
+  script.py                The habitat map pipeline
+  README.md                Detailed Windows/conda setup notes
+  data/boundaries/         US state boundaries (Census, 2024)
+  data/species/kit_fox/    GAP habitat model, range and iNaturalist sightings
+```
+
 ## How the starter script works
 
 `starter_script/script.py` builds one yes/no layer per rule and keeps the cells where every rule is true:
@@ -95,17 +107,7 @@ The script prints `Saved figures/kit_fox_habitat_map-updated2.png` when it finis
 
 The habitat model JSON must contain both a Northwest and a Southwest model. `yuma_bat_main()` and `western_toad_main()` are stubs; their config files do not exist yet.
 
-## Project layout
 
-```
-.github/workflows/ci.yml   CI (placeholder: checks out the repo only)
-docs/                      Requirements, design and risk register
-starter_script/
-  script.py                The habitat map pipeline
-  README.md                Detailed Windows/conda setup notes
-  data/boundaries/         US state boundaries (Census, 2024)
-  data/species/kit_fox/    GAP habitat model, range and iNaturalist sightings
-```
 
 ## Known limitations
 
