@@ -36,10 +36,20 @@ These requirements use MoSCoW, and are listed in order of their importance to th
 - C-1 (assumed): the tool must not require the user to download more than 10 GB of data in order to use the tool.
 
 ## Success Metrics
-- ???
+- Number of generated maps with incorrect unions of their included layers: 0 (as confirmed by test suite).
+- Rate of successful exports / downloads of generated maps and deductive rulesets: 100% (as confirmed by test suite and test users).
+- Amount of data that a user is required to download to run the tool: less than 10GB (as confirmed by test users).
+- Amount of instruction or direction outside instructions included on the website that a user needs to successfully use the tool: none (as confirmed by test users).
 
 ## Non-goals
-- ??? 
+- Saving maps or rulesets locally within the tool such that generated maps and rulesets persist between tool use sessions. 
+    - Instead, maps or rulesets that a user wishes to save must be downloaded to their device.
+- Direct upload of maps to Compass from within the tool.
+    - Instead, the user must download the map and upload it to Compass through the official Compass website.
+- Recording observation data within the tool.
+    - Observations should be recorded on an external tool such as iNaturalist. Observation data files may be imported to the tool, but the files and individual observations themselves will not persist in the tool between sessions.
+- Maintaining an account system for users.
+    - Because the tool itself only facilitates the generation and download of maps and deductive rulesets, there is no need to implement accounts for users; no user-specific data will persist between user sessions.
 
 ## Open Questions
 - How much data is acceptable for a user to be required to download? Owner: PM, confirms with Project Partner before tool development begins.
