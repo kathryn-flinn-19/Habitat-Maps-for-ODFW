@@ -1,3 +1,8 @@
+# Ignoring specific file types for the data
+# eg: venv files, etc
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
