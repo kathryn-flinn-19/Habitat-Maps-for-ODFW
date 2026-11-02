@@ -7,16 +7,16 @@ import geopandas as gpd
 import matplotlib
 
 matplotlib.use("Agg")
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import rasterio
-from rasterio.features import rasterize
-from rasterio.transform import from_bounds
 from matplotlib.colors import BoundaryNorm, ListedColormap
 from rasterio.enums import Resampling
+from rasterio.features import rasterize
+from rasterio.transform import from_bounds
 from rasterio.windows import from_bounds as bounds_window
-from typing import Optional, Union
 
 
 class Region(str, Enum):
@@ -37,12 +37,12 @@ class RegionalHabitat:
     # elevation range the species is expected to be found in
     elevation: tuple[int, int]
     # fw = flowing water data, ow = open/standing water, wv = wet vegetation
-    into_buff_fw: Optional[float]
-    into_buff_ow: Optional[float]
-    into_buff_wv: Optional[float]
-    from_buff_fw: Optional[float]
-    from_buff_ow: Optional[float]
-    from_buff_wv: Optional[float]
+    into_buff_fw: float | None
+    into_buff_ow: float | None
+    into_buff_wv: float | None
+    from_buff_fw: float | None
+    from_buff_ow: float | None
+    from_buff_wv: float | None
 
     """
         takes a dict (loaded from a json file or similar) and uses it to initialize
@@ -107,7 +107,7 @@ class SpeciesHabitat:
 class RegionPaths:
     gap_land_cover: Path
     elevation: Path
-    hydrography: Optional[Path] = None
+    hydrography: Path | None = None
 
 """
     a class to hold the ACTUAL to the folders containing the data layers necessary to 
@@ -135,8 +135,8 @@ class RegionalDataLayers:
 @dataclass(frozen=True)
 class SpeciesPaths:
     habitat_model: Path
-    species_range: Optional[Path] = None
-    inaturalist_observations: Optional[Path] = None
+    species_range: Path | None = None
+    inaturalist_observations: Path | None = None
 
     """
         parses the config yaml file for a species and returns the paths included there.
@@ -174,7 +174,7 @@ class GridSpec:
         the rasters we're using
     """
     @classmethod
-    def from_rasters(cls, paths: Union[Path, list[Path]], preview_height: int = 2100) -> "GridSpec":
+    def from_rasters(cls, paths: Path | list[Path], preview_height: int = 2100) -> "GridSpec":
         if isinstance(paths, Path):
             paths = [paths]
 
@@ -469,7 +469,7 @@ def add_state_lines(
 """
 def add_inaturalist_observations(
     ax: plt.Axes,
-    observations_path: Optional[Path],
+    observations_path: Path | None,
     bounds: rasterio.coords.BoundingBox,
 ) -> None:
     if observations_path is None or not observations_path.exists():
