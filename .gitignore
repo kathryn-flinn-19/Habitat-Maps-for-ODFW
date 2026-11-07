@@ -3,7 +3,25 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+#Data layers Specific to us
+*.adf
 *.venv
+*.xml
+*.dat
+*.nit
+*.dir
+*.ovr
+*.yaml
+*.aux
+*.aml
+*.dbg
+*.json
+*.CPG
+*.csu
+*.dbf
+*.prj
+*.shp
+*.shx
 
 # C extensions
 *.so
