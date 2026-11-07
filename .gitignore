@@ -22,7 +22,8 @@ __pycache__/
 *.prj
 *.shp
 *.shx
-*.HUC
+/figures
+/HUC
 
 # C extensions
 *.so
