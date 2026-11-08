@@ -24,6 +24,7 @@ __pycache__/
 *.shx
 figures/
 HUC/
+data/
 
 # C extensions
 *.so
