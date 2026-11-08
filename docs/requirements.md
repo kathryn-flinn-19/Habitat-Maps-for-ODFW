@@ -1,42 +1,54 @@
 # Requirements
 
 ## Problem Statement
-The Oregon Department of Fish and Wildlife wants to maintain habitat maps of the species that it is responsible for. However, many different habitat maps may exist, all created by different experts. Further, there are different types of maps to consider: range maps, which record the geospatial regions a species may be found in; and habitat maps, which are subsets of range maps that have deductive habitat rules applied to them to produce a more accurate map of where a species may be found. Given that multiple habitat and range maps may exist, experts want to be able to compare the maps to see where they differ. Additionally, experts may want to update both a range map and the deductive rules applied to it. Without a specific tool to compare these maps, however, experts may struggle to do so, resulting in challenges when attempting to create accurate, unified habitat maps. 
+The Oregon Department of Fish and Wildlife wants to maintain habitat maps of the species that it is responsible for. However, many different habitat maps may exist, all created by different experts. Further, there are different types of maps to consider: range maps, which record the geospatial regions a species may be found in; and habitat maps, which are subsets of range maps that have deductive habitat rules applied to them to produce a more accurate map of where a species may be found. Given that multiple habitat and range maps may exist, experts want to be able to view and update both a range map and the deductive rules applied to it to make it more accurate. Without a specific tool to view and edit these maps, however, experts may struggle to do so, resulting in challenges when attempting to create accurate, unified habitat maps. 
 
 ## Functional Requirements
 These requirements use MoSCoW, and are listed in order of their importance to the project rather than to the build order.
-- FR-1 (Must: core functionality of the project, required by Project Partner): the tool must be able to display multiple different map layers for a given species at the same time.
-    - Acceptance criteria: the tool shall display a union of multiple maps' data, rather than just a single layer.
+- FR-1 (Must: core functionality of the project, required by Project Partner): the tool must be able to generate and display a map made up of multiple different data layers for a given species at the same time.
+    - Acceptance criteria: the tool shall display a logical intersection of multiple map layers' data, rather than just displaying a single layer.
 - FR-2 (Must: core functionality of the project, required by Project Partner): the user may toggle between map layers that they wish to display.
-    - Acceptance criteria 1: selecting a map layer to be displayed shall union its data with the map layers currently displayed. 
+    - Acceptance criteria 1: selecting a map layer to be displayed shall intersect its data with the map layers currently displayed. 
     - Acceptance criteria 2: deselecting a map layer shall remove its data from the display such that only the data shared by the remaining map layers is displayed.
 - FR-3 (Must: core functionality of the project, required by Project Partner): the user can edit a range map's HUCs by selecting or deselecting what HUCs are to be included in the range map.
     - Acceptance criteria 1: a user interacting with a range map in an "edit" mode can add additional HUCs to a range map by clicking on a HUC while an "add" option is specified.
     - Acceptance criteria 2: a user interacting with a range map in an "edit" mode can remove HUCs from a range map by clicking on that HUC while a "remove" option is specified.
-- FR-4 (Must: core functionality of the project, required by Project Partner): the user can export an updated range map in a format compatible with ODFW's Compass service.
-    - Acceptance criteria 1: an exported range map includes the HUCs added to it and excludes the HUCs removed from it.
-    - Acceptance criteria 2: a range map exported from the tool can be uploaded to ODFW's Compass service without being converted to a different file format.
-- FR-5 (Must: core functionality of the project, required by Project Partner): the user can edit and export the deductive rules pertaining to a given habitat map. 
+- FR-4 (Must: core functionality of the project, required by Project Partner): the user can edit and export the deductive rules pertaining to a given habitat map. 
     - Acceptance criteria 1: an updated deductive rules file maintains the changes made to it after being exported.
     - Acceptance criteria 2: an updated deductive rules file has the same file format as the original file.
-- FR-6 (Must: core functionality of the project, required by Project Partner): the user can apply changes made by a deductive ruleset to a given map by re-uploading the updated ruleset and regenerating the map.
+- FR-5 (Must: core functionality of the project, required by Project Partner): the user can apply changes made by a deductive ruleset to a given map by re-uploading the updated ruleset and regenerating the map.
     - Acceptance criteria: a map generated by an updated ruleset should reflect the updated rules, rather than the old ones; that is to say, the map should be different.
-- FR-7 (Should: usability is an important consideration for the project): the user can zoom in, zoom out, and pan around the map.
+- FR-6 (Must: core functionality of the project, required by Project Partner): the user can search for a species by name to generate its habitat map. 
+    - Acceptance criteria 1: searching for a species that is supported by the tool will generate and display a habitat map for that species using the data layers available for the species.
+    - Acceptance criteria 2: searching for a species that is not supported by the tool will yield no results and will instead display some sort of "species not found" message.
+- FR-7 (Should: desired functionality of the project, but secondary to main functionality): data layers that are not unavailable for the current species will be indicated as unavailable in the user interface.
+    - Acceptance criteria: data layers that are not available for the current species are greyed out or otherwise unselectable.
+- FR-8 (Should: desired functionality of the project, but secondary to main functionality): the user can export an updated range map in a format compatible with ODFW's Compass service.
+    - Acceptance criteria 1: an exported range map includes the HUCs added to it and excludes the HUCs removed from it.
+    - Acceptance criteria 2: a range map exported from the tool can be uploaded to ODFW's Compass service without being converted to a different file format.
+- FR-9 (Should: usability is an important consideration for the project): the user can zoom in, zoom out, and pan around the map.
     - Acceptance criteria: zooming in, zooming out, or panning around the map change the map view while still displaying the appropriate data within the updated map bounds.
-- FR-8 (Could: usability and accessibility are important considerations for the project): the user can batch-select or deselect map layers to be shown, with no updates being applied until a specific "generate map" button is clicked.
+- FR-10 (Could: usability and accessibility are important considerations for the project): the user can batch-select or deselect map layers to be shown, with no updates being applied until a specific "generate map" button is clicked.
     - Acceptance criteria: adding and removing multiple map layers at the same time shall produce the correct union of map data for only the map layers that remain selected.
+- FR-11 (Could: a nice-to-have, but secondary to the main functionality of the tool): the user may upload and compare multiple generated maps, whose differing regions will be highlighted using colors or patterns.
+    - Acceptance criteria 1: the maps that are being compared shall be superimposed on each other, such that the logical intersection of their areas is indicated using colors or patterns.
+    - Acceptance criteria 2: the maps that are being compared shall be superimposed on each other, such that the areas outside of the maps' logical intersection is highlighted using different colors or patterns, with each map having its own unique color so that its area can be easily identified.
+- FR-12 (Could: a nice-to-have, but secondary to the main functionality of the tool): the user can update unavailable data layers for a species by indicating what the data layer should include.
+    - Acceptance criteria 1: a user is able to view a list or dropdown of available options for the missing data layer.
+    - Acceptance criteria 2: a user is able to select one or more options from the list of options for an unavailable data layer, such that these data layers are included in the regenerated map. Recall that this means that the resulting map is a logical intersection of all selected data layers. 
+- FR-13 (Could: a nice-to-have, though it is currently secondary to the main functionality laid out above): the user may export their map in different resolutions.
+    - Acceptance criteria: exporting a map in a higher or lower resolution results in a map with the appropriate data granularity, instead of just the original map.
 
 ## Nonfunctional Requirements
-- NFR-1 (Should: usability lends to accessibility, which is a major goal for this tool): loading a map layer takes less than 5 seconds on a device on OSU's wifi.
-- NFR-2 (Should: usability lends to accessibility, which is a major goal for this tool): submitting updates to the layers displayed for a map takes less than 5 seconds on a device on OSU's wifi.
-- NFR-3 (Should: usability lends to accessibility, which is a major goal for this tool): Unioned map layers use color, patterns, or both to indicate what regions belong to each map layer, where the intersect, and where they differ.
-- NFR-4 (Should: usability lends to accessibility, which is a major goal for this tool): zooming in, zooming out, or panning around the displayed map updates the map view appropriately within 1 second.
+- NFR-1 (Should: usability lends to accessibility, which is a major goal for this tool): generating a map takes less than 2 seconds on a device on OSU's wifi.
+- NFR-2 (Should: usability lends to accessibility, which is a major goal for this tool): submitting updates to the layers displayed for a map generates the updated map in less than 2 seconds on a device on OSU's wifi.
+- NFR-3 (Should: usability lends to accessibility, which is a major goal for this tool): zooming in, zooming out, or panning around the displayed map updates the map view appropriately within 1 second.
 
 ## Constraints
 - C-1 (assumed): the tool must not require the user to download more than 10 GB of data in order to use the tool.
 
 ## Success Metrics
-- Number of generated maps with incorrect unions of their included layers: 0 (as confirmed by test suite).
+- Number of generated maps with incorrect intersections of their included layers: 0 (as confirmed by test suite).
 - Rate of successful exports / downloads of generated maps and deductive rulesets: 100% (as confirmed by test suite and test users).
 - Amount of data that a user is required to download to run the tool: less than 10GB (as confirmed by test users).
 - Amount of instruction or direction outside instructions included on the website that a user needs to successfully use the tool: none (as confirmed by test users).
