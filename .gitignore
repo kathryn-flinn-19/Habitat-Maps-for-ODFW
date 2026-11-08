@@ -23,7 +23,7 @@ __pycache__/
 *.shp
 *.shx
 figures/
-HUC/
+hucs/
 data/
 
 # C extensions
