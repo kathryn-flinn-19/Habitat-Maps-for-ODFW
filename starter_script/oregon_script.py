@@ -117,9 +117,9 @@ class RegionPaths:
 @dataclass(frozen=True)
 class RegionalDataLayers:
     northwest: RegionPaths = RegionPaths(
-        gap_land_cover=Path("C:/Users/julia/Documents/Capstone/oregon_data/oregon/gap_map/northwest/lcgap_nw.tif"),
-        elevation=Path("C:/Users/julia/Documents/Capstone/oregon_data/oregon/elevation/northwest/elev_nw_oregon.tif"),
-        hydrography=Path("C:/Users/julia/Documents/Capstone/oregon_data/oregon/hydro"),
+        gap_land_cover=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/oregon/gap_map/northwest/lcgap_nw.tif"),
+        elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/oregon/elevation/northwest/elev_nw_oregon.tif"),
+        hydrography=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/oregon/hydro"),
     )
     state_boundaries: Path = Path("C:/Users/julia/Documents/Capstone/oregon_data/oregon/boundaries/oregon/oregon.shp")
 
