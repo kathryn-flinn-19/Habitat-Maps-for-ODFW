@@ -506,6 +506,7 @@ def add_inaturalist_observations(
     slim this down to just displaying the oregon map
 """
 def plot_species_habitat(species_config_path: Path, title: str, output_path: Path) -> None:
+    print(f"Starting habitat map for {species_config_path}. This can take several minutes.", flush=True)
     regional_data_layers = RegionalDataLayers()
     species_paths = SpeciesPaths.from_json(species_config_path)
     displayed_states = [
@@ -520,6 +521,7 @@ def plot_species_habitat(species_config_path: Path, title: str, output_path: Pat
         "Colorado",
         "Wyoming",
     ]
+    print("Loading species model and map grid...", flush=True)
     species_habitat = SpeciesHabitat.from_json(species_paths.habitat_model)
     grid_spec = GridSpec.from_rasters(
         [
@@ -528,6 +530,7 @@ def plot_species_habitat(species_config_path: Path, title: str, output_path: Pat
         ],
         preview_height=3500,
     )
+    print("Building species range layer...", flush=True)
     range_candidates = species_range_map(species_paths.species_range, grid_spec) if species_paths.species_range is not None else None
     regional_maps = []
 
@@ -540,16 +543,19 @@ def plot_species_habitat(species_config_path: Path, title: str, output_path: Pat
             regional_habitat = species_habitat.southwest
             regional_paths = regional_data_layers.southwest
 
+        print(f"Processing {region.value} region: land cover...", flush=True)
         land_cover_candidates = gap_land_cover_map(
             regional_habitat,
             regional_paths,
             grid_spec,
         )
+        print(f"Processing {region.value} region: elevation...", flush=True)
         elevation_candidates = elevation_map(
             regional_habitat,
             regional_paths,
             grid_spec,
         )
+        print(f"Processing {region.value} region: hydrography...", flush=True)
         hydrography_candidates = hydrography_map(
             regional_habitat,
             regional_paths,
@@ -565,6 +571,7 @@ def plot_species_habitat(species_config_path: Path, title: str, output_path: Pat
         )
 
     # combine all maps into one
+    print("Merging regional maps...", flush=True)
     true_habitat_map = merge_regional_maps(*regional_maps)
 
     cmap = ListedColormap(["white", "#C2CBEE"])
@@ -573,6 +580,7 @@ def plot_species_habitat(species_config_path: Path, title: str, output_path: Pat
 
     # building out our figure: display the habitat map, then
     # add state lines, then add inaturalist data
+    print("Drawing map...", flush=True)
     fig, ax = plt.subplots(figsize=(12, 10))
     ax.imshow(
         true_habitat_map.data,
@@ -600,6 +608,7 @@ def plot_species_habitat(species_config_path: Path, title: str, output_path: Pat
     )
     ax.set_title(title)
     ax.set_axis_off()
+    print(f"Saving {output_path}...", flush=True)
     fig.savefig(output_path, dpi=200, bbox_inches="tight")
     plt.close(fig)
     print(f"Saved {output_path}")
