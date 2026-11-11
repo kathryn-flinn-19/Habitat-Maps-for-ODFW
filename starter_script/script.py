@@ -506,6 +506,7 @@ def add_inaturalist_observations(
     slim this down to just displaying the oregon map
 """
 def plot_species_habitat(species_config_path: Path, title: str, output_path: Path) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     regional_data_layers = RegionalDataLayers()
     species_paths = SpeciesPaths.from_json(species_config_path)
     displayed_states = [
