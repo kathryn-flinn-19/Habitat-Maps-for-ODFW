@@ -117,15 +117,15 @@ class RegionPaths:
 @dataclass(frozen=True)
 class RegionalDataLayers:
     northwest: RegionPaths = RegionPaths(
-        gap_land_cover=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/gap_map/northwest/lcgap_nw"),
-        elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/elevation/northwest/elev_nw"),
-        hydrography=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/hydrography/GAPHydroData/nw"),
+        gap_land_cover=Path(r"C:\Users\Adiso\Downloads\lcgap_nw\lcgap_nw"),
+        elevation=Path(r"C:\Users\Adiso\Downloads\elev_nw\elev_nw"),
+        hydrography=Path(r"C:\Users\Adiso\Downloads\nw"),
     )
     southwest: RegionPaths = RegionPaths(
-        gap_land_cover=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/gap_map/southwest/lcgap_sw"),
-        elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/elevation/southwest/elev_sw"),
+        gap_land_cover=Path(r"C:\Users\Adiso\Downloads\lcgap_sw\lcgap_sw"),
+        elevation=Path(r"C:\Users\Adiso\Downloads\elev_sw\elev_sw"),
     )
-    state_boundaries: Path = Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/boundaries/cb_2024_us_state_20m.shp")
+    state_boundaries: Path = Path(r"C:\Users\Adiso\Downloads\to_students\to_students\boundaries\cb_2024_us_state_20m.shp")
 
 """
     parses a given yaml file to return the values it included for habitat_model,

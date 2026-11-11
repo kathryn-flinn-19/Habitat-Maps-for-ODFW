@@ -32,11 +32,11 @@
 
 ## Set your data paths
 ### In script.py/RegionalDataLayers():
-- Set your `northwest.gap_land_cover` to the path to `data/gap_map/northwest/lcgap_nw`
-- Set your `northwest.elevation` to the path to `data/gap_map/northwest/lcgap_nw`
+- Set your `northwest.gap_land_cover` to the path to the raster dataset inside the downloaded folder, such as `C:\Users\<your_username>\Downloads\lcgap_nw\lcgap_nw`
+- Set your `northwest.elevation` to the path to the raster dataset inside the downloaded folder, such as `C:\Users\<your_username>\Downloads\elev_nw\elev_nw`
 - Set your `northwest.hydrography` to the path to `data/hydrography/GAPHydroData/nw`
-- Set your `southwest.gap_land_cover` to the path to `data/gap_map/southwest/lcgap_sw`
-- Set your `southwest.elevation` to the path to `data/elevation/southwest/elev_sw`
+- Set your `southwest.gap_land_cover` to the path to the raster dataset inside the downloaded folder, such as `C:\Users\<your_username>\Downloads\lcgap_sw\lcgap_sw`
+- Set your `southwest.elevation` to the path to the raster dataset inside the downloaded folder, such as `C:\Users\<your_username>\Downloads\elev_sw\elev_sw`
 - Set your `state_boundaries` variable to the path to `data/boundaries/cb_2024_us_state_20m.shp`.
 
 ### In data/species/kitfox/kit_fox.yaml:
