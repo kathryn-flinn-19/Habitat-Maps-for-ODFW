@@ -1,3 +1,5 @@
+<!-- applies to all routes in the directory (ie menus) -->
+
 <script lang="ts">
 	import favicon from '#lib/assets/favicon.svg';
 	import type { LayoutProps } from './$types';
