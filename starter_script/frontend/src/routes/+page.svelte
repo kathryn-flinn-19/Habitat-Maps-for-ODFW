@@ -1,7 +1,3 @@
-<script lang="ts">
-	import kit_fox from '#lib/assets/oregon.png';
-</script>
-
 <style>
     h1 {
         text-align: center;
@@ -33,7 +29,6 @@
 
 <h1>Habitat Maps for ODFW</h1>
 
-<img src={kit_fox} alt="Oregon Map of the Kit Fox Habitat" />
 
 <button class = "edit" onclick={() => window.location.href = '/edit'}>Edit</button>
 
