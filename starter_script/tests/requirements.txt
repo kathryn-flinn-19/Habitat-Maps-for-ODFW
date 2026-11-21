@@ -1,0 +1,10 @@
+# Runtime dependencies for the ODFW habitat-map starter script.
+# These are the third-party packages imported at the top of
+# starter_script/script.py. Lower bounds keep installs flexible during the
+# design phase; pin exact versions (e.g. from `pip freeze` in the conda env
+# that generates your maps) if you need fully reproducible CI builds.
+geopandas>=1.0
+rasterio>=1.3
+pandas>=2.0
+numpy>=1.26,<3
+matplotlib>=3.8
