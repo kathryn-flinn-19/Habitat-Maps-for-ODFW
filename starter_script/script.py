@@ -85,6 +85,11 @@ class SpeciesHabitat:
             species_info = json.load(f)
 
         regional_models: dict[Region, RegionalHabitat] = {}
+
+        # notice: only using the data in the "models" sections. can exclude all the
+        # links?
+        # double check the sourcing though, bc I remember that Logan said he wanted to
+        # keep that
         for species_model in species_info["models"].values():
             region = species_model["Region"].lower()
             # notice: we're only filling out northwest and southwest habitats

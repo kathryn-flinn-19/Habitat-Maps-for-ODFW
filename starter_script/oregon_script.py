@@ -21,7 +21,7 @@ from rasterio.windows import from_bounds as bounds_window
 
 class Region(str, Enum):
     NORTHWEST = "northwest"
-    SOUTHWEST = "southwest"
+    #SOUTHWEST = "southwest"
 
 """
     used to organize habitat details of a species' habitat into one object.
@@ -73,7 +73,7 @@ class RegionalHabitat:
 @dataclass(frozen=True)
 class SpeciesHabitat:
     northwest: RegionalHabitat
-    southwest: RegionalHabitat
+    #southwest: RegionalHabitat
 
     """
         takes a json, returns a SpeciesHabitat object with RegionalHabitats 
@@ -88,12 +88,12 @@ class SpeciesHabitat:
         for species_model in species_info["models"].values():
             region = species_model["Region"].lower()
             # notice: we're only filling out northwest and southwest habitats
-            if region in (Region.NORTHWEST, Region.SOUTHWEST):
+            if region in (Region.NORTHWEST): #(Region.NORTHWEST, Region.SOUTHWEST):
                 regional_models[Region(region)] = RegionalHabitat.from_species_model(species_model)
 
         return SpeciesHabitat(
             northwest=regional_models[Region.NORTHWEST],
-            southwest=regional_models[Region.SOUTHWEST],
+            #southwest=regional_models[Region.SOUTHWEST],
         )
 
 """
@@ -121,7 +121,7 @@ class RegionalDataLayers:
         elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/oregon/elevation/northwest/elev_nw_oregon.tif"),
         hydrography=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/oregon/hydro"),
     )
-    state_boundaries: Path = Path("C:/Users/julia/Documents/Capstone/oregon_data/oregon/boundaries/oregon/oregon.shp")
+    state_boundaries: Path = Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/oregon/boundaries/oregon/cb_2024_us_state_20m.shp")
 
 """
     parses a given yaml file to return the values it included for habitat_model,
@@ -284,6 +284,7 @@ def elevation_map(habitat: RegionalHabitat, paths: RegionPaths, grid: GridSpec) 
 def hydrography_map(habitat: RegionalHabitat, paths: RegionPaths, grid: GridSpec) -> RasterMap:
     # if no hydrography data is provided, just use our gap land cover data
     if paths.hydrography is None:
+        print("No hydrography path provided; using gap land cover path instead")
         region = read_raster(paths.gap_land_cover, grid)
         return RasterMap(
             np.ma.array(
@@ -349,6 +350,8 @@ def hydrography_map(habitat: RegionalHabitat, paths: RegionPaths, grid: GridSpec
             - v2 = slow only
         - n = null
     """
+
+    # we should probably be including all of the layers if they're not null
     hydro_layers = [
         ("s0t1v0n0", habitat.from_buff_fw, habitat.into_buff_fw),
         ("s0t2v0n0", habitat.from_buff_ow, habitat.into_buff_ow),
@@ -374,10 +377,22 @@ def hydrography_map(habitat: RegionalHabitat, paths: RegionPaths, grid: GridSpec
 
         # seeing if the water types we want, in the elevation range we want, 
         # are in our data?
+        # if we don't include from_ or into_meters, we don't ever change the 
+        # candidate map, so it stays as all zeros
+
+        # I don't think this is really correct though, is it? if from_meters and into_meters
+        # are excluded, shouldn't that mean that ANY from_meters and into_meters is fine?
+        # and therefore, shouldn't the whole hydrography map be valid..?
         if from_meters is not None:
             candidate |= valid & np.isin(hydro.data, list(exterior_classes(float(from_meters))))
         if into_meters is not None:
             candidate |= valid & np.isin(hydro.data, list(interior_classes(float(into_meters))))
+
+        # TODO remove later --- this is just for testing purposes
+        if into_meters is None and from_meters is None:
+            # assume that hydrography data doesn't affect the species; ergo, everything
+            # should be valid afaik
+            candidate |= valid
 
     return RasterMap(np.ma.array(candidate.astype(np.uint8), mask=candidate_mask), grid)
 
@@ -598,7 +613,7 @@ def yuma_bat_main() -> None:
 
 
 def kit_fox_main() -> None:
-    plot_species_habitat(Path("data/species/kit_fox/kit_fox.yaml"), "", Path("figures/kit_fox_habitat_map-updated2.png"))
+    plot_species_habitat(Path("data/species/kit_fox/kit_fox.yaml"), "", Path("figures/kit_fox_combined.png"))
 
 
 def western_toad_main() -> None:
