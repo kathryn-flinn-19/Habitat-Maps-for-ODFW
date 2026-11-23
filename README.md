@@ -10,6 +10,8 @@ An OSU CS Capstone project for the Oregon Department of Fish and Wildlife (ODFW)
 .github/workflows/ci.yml   CI (placeholder: checks out the repo only)
 docs/                      Requirements, design and risk register
 starter_script/
+  frontend/
+    src/routes/+page.svelte
   script.py                The habitat map pipeline
   README.md                Detailed Windows/conda setup notes
   data/boundaries/         US state boundaries (Census, 2024)
@@ -107,7 +109,20 @@ The script prints `Saved figures/kit_fox_habitat_map-updated2.png` when it finis
 
 The habitat model JSON must contain both a Northwest and a Southwest model. `yuma_bat_main()` and `western_toad_main()` are stubs; their config files do not exist yet.
 
+## Front End
 
+As of right now, the front end is a separate entity from the inherited codebase and requires D3.js and Svelte/SvelteKit as dependencies; these can be installed through NPM in any order:
+
+` npm install svelte`
+` npm install D3`
+
+To launch the front end run the following commands:
+
+```bash
+cd Habitat-Maps-for-ODFW/starter_script/frontend
+npm run dev
+```
+From there, ctrl + click on the localhost link provided in the terminal
 
 ## Known limitations
 
