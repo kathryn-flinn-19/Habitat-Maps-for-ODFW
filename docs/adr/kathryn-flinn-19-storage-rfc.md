@@ -84,13 +84,3 @@ Accepted: Option C was agreed upon by all group members, and was approved by the
 [5] Wasser, Leah A. “Hierarchical Data Formats - What Is HDF5?” NSF | Neon, 2 Apr. 2026, www.neonscience.org/resources/learning-hub/tutorials/about-hdf5.
 [6] “Zarr.” Cloud-Optimized Geospatial Formats Guide, guide.cloudnativegeo.org/zarr/intro.html. Accessed 7 Nov. 2026.
 [7] Flinn, Kathryn. "Hydrography Layer Data Sizes." OneDrive, 22 Nov. 2026, https://oregonstateuniversity-my.sharepoint.com/:f:/g/personal/flinnk_oregonstate_edu/IgBJm5jHqKsXT64wTuUxI1YQAcOdKJ0eKSqfX4KCsjDj-hY?e=DixKNb.
-
-## Revision Log
-| Source | Feedback | Decision | Where or why |
-|---------|-------------|------------|---------------|
-| Lauren Bell (peer reviewer) | Choose a strong and exact metric to ensure that your verification works | Changed | Recommendation and Verification Plan: added an exact data size metric of 5-10 gigabytes to make the plan's success easier to verify |
-| Lauren Bell (peer reviewer) | Consider Cloudflare R2 as a potential data storage option | Declined | Although Cloudflare R2 does have a free storage tier, it only allows up to 10 gigabytes of storage per month, which is more than our conservative unclipped estimate of 20 gigabytes of data. Therefore, the only other option through Cloudflare R2 would be a paid tier, which would have the same monthly cost as DigitalOcean. Consequently, it wouldn't make sense to include another option that is not appreciably different from DigitalOcean's Network File Storage. |
-| Kirsten Winters (instructional team member) | Decrease font size | Changed | Full document: Document now has a smaller font size compared to the rough draft |
-| Kirsten Winters (instructional team member) | Replace live links with a bibliography and in-line reference numbers | Changed | Full document and Bibliography: Sources are now indicated by bracketed reference numbers (e.g. [1]), and a full bibliography is included in the document. |
-| Kirsten Winters (instructional team member) | Include the source for information about Digital Ocean's NFS | Changed | Bibliography, Option B, and Analysis: Bibliography includes the page for Digital Ocean's NFS, and references to information contained in that source are accompanied by bracketed reference numbers. | 
-| Kirsten Winters (instructional team member) | Consider constraints related to the Project Partner's long-term needs | Changed | Constraints: a line was added to indicate the constraint that an ideal solution would be free, as the Project Partner is aiming for a storage solution that does not have an ongoing maintenance cost. |
