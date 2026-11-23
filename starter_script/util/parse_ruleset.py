@@ -1,8 +1,6 @@
 import json
-from dataclasses import dataclass
-from enum import Enum
-from pathlib import Path
 import os
+from pathlib import Path
 
 """
     the point of this file is to provide basic ruleset parsing to allow analysis of
@@ -50,7 +48,7 @@ def list_attrs_by_link(data_json: dict, linked_attrs: dict[str, list]):
             continue
 
         # if we don't have the link already
-        if not value in linked_attrs.keys():
+        if not value in linked_attrs:
             linked_attrs.update({value: []})
 
         # check if we've already added that attribute to the list.
@@ -97,7 +95,7 @@ def extract_non_null_layers(d: dict, running_list: list, file: str):
     if the field is present
 """
 def remove_fld(data_json: dict, fld: str):
-    if fld in data_json.keys():
+    if fld in data_json:
         data_json.pop(fld)
 
 """
@@ -127,7 +125,7 @@ def main():
                 with open(Path("./starter_script/data/species/" + folder + "/" + file), "r") as f:
                     species_info = json.load(f)
 
-                for _, m in species_info["models"].items():
+                for m in species_info["models"].values():
                     used_layers = extract_non_null_layers(m, used_layers, file)
 
                 list_attrs_by_link(species_info["input_layers"], linked_attrs)                
@@ -137,8 +135,8 @@ def main():
         print(i+1, ": ", used_layers[i])
 
     print("linked attrs:")
-    for key in linked_attrs:
-        print(key, ": ", linked_attrs[key])
+    for key, val in linked_attrs.items():
+        print(key, ": ", val)
 
 if __name__ == "__main__":
     main()
