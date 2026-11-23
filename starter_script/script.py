@@ -117,13 +117,13 @@ class RegionPaths:
 @dataclass(frozen=True)
 class RegionalDataLayers:
     northwest: RegionPaths = RegionPaths(
-        gap_land_cover=Path(r"C:\Users\Adiso\Downloads\lcgap_nw\lcgap_nw"),
-        elevation=Path(r"C:\Users\Adiso\Downloads\elev_nw\elev_nw"),
-        hydrography=Path(r"C:\Users\Adiso\Downloads\nw"),
+        gap_land_cover=Path(r"C:\Users\desktop"),
+        elevation=Path(r"C:\Users\desktop"),
+        hydrography=Path(r"C:\Users\desktop"),
     )
     southwest: RegionPaths = RegionPaths(
-        gap_land_cover=Path(r"C:\Users\Adiso\Downloads\lcgap_sw\lcgap_sw"),
-        elevation=Path(r"C:\Users\Adiso\Downloads\elev_sw\elev_sw"),
+        gap_land_cover=Path(r"C:\Users\desktop"),
+        elevation=Path(r"C:\Users\"),
     )
     state_boundaries: Path = Path(r"C:\Users\Adiso\Downloads\to_students\to_students\boundaries\cb_2024_us_state_20m.shp")
 
