@@ -1,13 +1,9 @@
 import inspect
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
 import geopandas as gpd
-import rasterio
+import pandas as pd
 import pytest
-
-
 import script
 
 # The folder that script.py lives in. All paths in the config files
