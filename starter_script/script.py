@@ -117,15 +117,15 @@ class RegionPaths:
 @dataclass(frozen=True)
 class RegionalDataLayers:
     northwest: RegionPaths = RegionPaths(
-        gap_land_cover=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/gap_map/northwest/lcgap_nw"),
-        elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/elevation/northwest/elev_nw"),
-        hydrography=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/hydrography/GAPHydroData/nw"),
+        gap_land_cover=Path(r"C:\Users\desktop"),
+        elevation=Path(r"C:\Users\desktop"),
+        hydrography=Path(r"C:\Users\desktop"),
     )
     southwest: RegionPaths = RegionPaths(
-        gap_land_cover=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/gap_map/southwest/lcgap_sw"),
-        elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/elevation/southwest/elev_sw"),
+        gap_land_cover=Path(r"C:\Users\desktop"),
+        elevation=Path(r"C:\Users\"),
     )
-    state_boundaries: Path = Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/boundaries/cb_2024_us_state_20m.shp")
+    state_boundaries: Path = Path(r"C:\Users\Adiso\Downloads\to_students\to_students\boundaries\cb_2024_us_state_20m.shp")
 
 """
     parses a given yaml file to return the values it included for habitat_model,
@@ -506,6 +506,7 @@ def add_inaturalist_observations(
     slim this down to just displaying the oregon map
 """
 def plot_species_habitat(species_config_path: Path, title: str, output_path: Path) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     regional_data_layers = RegionalDataLayers()
     species_paths = SpeciesPaths.from_json(species_config_path)
     displayed_states = [
