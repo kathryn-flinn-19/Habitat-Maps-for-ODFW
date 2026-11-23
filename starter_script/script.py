@@ -21,7 +21,6 @@ from rasterio.windows import from_bounds as bounds_window
 
 class Region(str, Enum):
     NORTHWEST = "northwest"
-    SOUTHWEST = "southwest"
 
 """
     used to organize habitat details of a species' habitat into one object.
@@ -65,35 +64,29 @@ class RegionalHabitat:
         )
 
 """
-    combines two different regional habitats where a species
-    can be found into one object. includes, for our purposes,
-    the habitat object for the northwestern US and southwestern
-    US.
+    combines regional habitat information for a species.
+    for this project, only the northwestern US habitat model is used.
 """
 @dataclass(frozen=True)
 class SpeciesHabitat:
     northwest: RegionalHabitat
-    southwest: RegionalHabitat
 
     """
-        takes a json, returns a SpeciesHabitat object with RegionalHabitats 
-        built by the data within the json  
+        takes a json file and returns a SpeciesHabitat object with the
+        Northwest RegionalHabitat built from the data within the json.
     """
     @staticmethod
     def from_json(path: Path) -> "SpeciesHabitat":
         with open(path, "r") as f:
             species_info = json.load(f)
 
-        regional_models: dict[Region, RegionalHabitat] = {}
-        for species_model in species_info["models"].values():
-            region = species_model["Region"].lower()
-            # notice: we're only filling out northwest and southwest habitats
-            if region in (Region.NORTHWEST, Region.SOUTHWEST):
-                regional_models[Region(region)] = RegionalHabitat.from_species_model(species_model)
+        northwest_model = next(
+            model for model in species_info["models"].values()
+            if model["Region"].lower() == Region.NORTHWEST.value
+        )
 
         return SpeciesHabitat(
-            northwest=regional_models[Region.NORTHWEST],
-            southwest=regional_models[Region.SOUTHWEST],
+            northwest=RegionalHabitat.from_species_model(northwest_model)
         )
 
 """
@@ -358,17 +351,6 @@ def hydrography_map(habitat: RegionalHabitat, paths: RegionPaths, grid: GridSpec
     candidate_mask = np.ones((grid.height, grid.width), dtype=bool)
     for layer_name, from_meters, into_meters in hydro_layers:
         hydro = read_raster(paths.hydrography / f"{layer_name}.tif", grid)
-        print(f"\nHydrography layer: {layer_name}")
-        print("From buffer:", from_meters)
-        print("Into buffer:", into_meters)
-        print("Valid pixels:", hydro.data.count())
-        print("Unique values:", np.unique(hydro.data.compressed())[:30])
-
-        if from_meters is not None:
-            print("Exterior classes:", exterior_classes(float(from_meters)))
-
-        if into_meters is not None:
-            print("Interior classes:", interior_classes(float(into_meters)))
         valid = ~np.ma.getmaskarray(hydro.data)
         candidate_mask &= ~valid
 
