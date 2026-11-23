@@ -1,6 +1,5 @@
 import json
 from dataclasses import dataclass
-from enum import Enum
 from pathlib import Path
 
 import geopandas as gpd
@@ -18,10 +17,6 @@ from rasterio.features import rasterize
 from rasterio.transform import from_bounds
 from rasterio.windows import from_bounds as bounds_window
 
-
-class Region(str, Enum):
-    NORTHWEST = "northwest"
-
 """
     used to organize habitat details of a species' habitat into one object.
     information included:
@@ -30,7 +25,7 @@ class Region(str, Enum):
     - water features in that environment
 """
 @dataclass(frozen=True)
-class RegionalHabitat:
+class Habitat:
     # ids of the ecosystems where the species is primarily found
     prim_eco_sys_ids: list[int]
     # elevation range the species is expected to be found in
@@ -45,14 +40,14 @@ class RegionalHabitat:
 
     """
         takes a dict (loaded from a json file or similar) and uses it to initialize
-        RegionalHabitat attrs.
+        Habitat attrs.
     """
     @staticmethod
-    def from_species_model(species_model: dict) -> "RegionalHabitat":
+    def from_species_model(species_model: dict) -> "Habitat":
         min_elevation = species_model["intElevMin"]
         max_elevation = species_model["intElevMax"]
         prim_eco_sys_ids = [eco_sys[0] for eco_sys in species_model["PrimEcoSys"]]
-        return RegionalHabitat(
+        return Habitat(
             prim_eco_sys_ids=prim_eco_sys_ids,
             elevation=(min_elevation, max_elevation),
             into_buff_fw=species_model["intIntoBuffFW"],
@@ -63,31 +58,17 @@ class RegionalHabitat:
             from_buff_wv=species_model["intFromBuffWV"],
         )
 
-"""
-    combines regional habitat information for a species.
-    for this project, only the northwestern US habitat model is used.
-"""
-@dataclass(frozen=True)
-class SpeciesHabitat:
-    northwest: RegionalHabitat
-
-    """
-        takes a json file and returns a SpeciesHabitat object with the
-        Northwest RegionalHabitat built from the data within the json.
-    """
     @staticmethod
-    def from_json(path: Path) -> "SpeciesHabitat":
+    def from_json(path: Path) -> "Habitat":
         with open(path, "r") as f:
             species_info = json.load(f)
 
-        northwest_model = next(
+        habitat_model = next(
             model for model in species_info["models"].values()
-            if model["Region"].lower() == Region.NORTHWEST.value
+            if model["Region"].lower() == "northwest"
         )
 
-        return SpeciesHabitat(
-            northwest=RegionalHabitat.from_species_model(northwest_model)
-        )
+        return Habitat.from_species_model(habitat_model)
 
 """
     holds local paths to the data folders we use to create the maps
@@ -96,25 +77,13 @@ class SpeciesHabitat:
     - elevation
     - hydrography data
 """
-@dataclass(frozen=True)
-class RegionPaths:
-    gap_land_cover: Path
-    elevation: Path
-    hydrography: Path | None = None
-
-"""
-    a class to hold the ACTUAL to the folders containing the data layers necessary to 
-    create the habitat maps.
-    also includes path to shp file of state lines, to overlay on our generated habitat map
 """
 @dataclass(frozen=True)
-class RegionalDataLayers:
-    northwest: RegionPaths = RegionPaths(
-        gap_land_cover=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/oregon/gap_map/northwest/lcgap_nw.tif"),
-        elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/oregon/elevation/northwest/elev_nw_oregon.tif"),
-        hydrography=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/oregon/hydro"),
-    )
-    state_boundaries: Path = Path("C:/Users/julia/Documents/Capstone/oregon_data/oregon/boundaries/oregon/oregon.shp")
+class DataLayers:
+    gap_land_cover=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/gap_map/northwest/lcgap_nw.tif"),
+    elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/elevation/northwest/elev_nw_oregon.tif"),
+    hydrography=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/hydro"),
+    state_boundaries: Path = Path("C:/Users/Super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/boundaries/oregon.shp")
 
 """
     parses a given yaml file to return the values it included for habitat_model,
@@ -251,7 +220,7 @@ def read_raster(
     read our gap land cover data file and turn it into a RasterMap with 
     the specified height, width, and bounds
 """
-def gap_land_cover_map(habitat: RegionalHabitat, paths: RegionPaths, grid: GridSpec) -> RasterMap:
+def gap_land_cover_map(habitat: Habitat, paths: DataLayers, grid: GridSpec) -> RasterMap:
     land_cover = read_raster(paths.gap_land_cover, grid)
     # check if our land cover is any of the ecosystems our species can be found in
     candidate = np.isin(land_cover.data, habitat.prim_eco_sys_ids).astype(np.uint8)
@@ -262,7 +231,7 @@ def gap_land_cover_map(habitat: RegionalHabitat, paths: RegionPaths, grid: GridS
 """
     turn our elevation data into a RasterMap with the specified height, width, and bounds
 """
-def elevation_map(habitat: RegionalHabitat, paths: RegionPaths, grid: GridSpec) -> RasterMap:
+def elevation_map(habitat: Habitat, paths: DataLayers, grid: GridSpec) -> RasterMap:
     elevation = read_raster(paths.elevation, grid)
     low, high = habitat.elevation
     # check whether each piece of elevation data is within our expected elevation bounds
@@ -274,7 +243,7 @@ def elevation_map(habitat: RegionalHabitat, paths: RegionPaths, grid: GridSpec) 
 """
     create a raster map out of our hydrography data, if we have it
 """
-def hydrography_map(habitat: RegionalHabitat, paths: RegionPaths, grid: GridSpec) -> RasterMap:
+def hydrography_map(habitat: Habitat, paths: DataLayers, grid: GridSpec) -> RasterMap:
     # if no hydrography data is provided, just use our gap land cover data
     if paths.hydrography is None:
         region = read_raster(paths.gap_land_cover, grid)
@@ -410,29 +379,6 @@ def combine_candidate_maps(*candidate_maps: RasterMap) -> RasterMap:
 
     return RasterMap(data=combined, grid=first.grid)
 
-"""
-    combining multiple regional maps into one
-"""
-def merge_regional_maps(*regional_maps: RasterMap) -> RasterMap:
-    if not regional_maps:
-        raise ValueError("At least one regional map is required")
-    if len(regional_maps) == 1:
-        return regional_maps[0]
-
-    first = regional_maps[0]
-    for other in regional_maps[1:]:
-        first.validate_compatible(other)
-
-    merged_mask = np.ma.getmaskarray(first.data).copy()
-    merged = first.data.filled(0).astype(bool)
-    for other in regional_maps[1:]:
-        merged_mask &= np.ma.getmaskarray(other.data)
-        merged = np.logical_or(merged, other.data.filled(0))
-
-    merged = merged.astype(np.uint8)
-    merged = np.ma.masked_where(merged_mask, merged)
-
-    return RasterMap(data=merged, grid=first.grid)
 
 """
     plotting states on a grid
@@ -495,33 +441,31 @@ def add_inaturalist_observations(
     slim this down to just displaying the oregon map
 """
 def plot_species_habitat(species_config_path: Path, title: str, output_path: Path) -> None:
-    regional_data_layers = RegionalDataLayers()
+    data_layers = DataLayers()
     species_paths = SpeciesPaths.from_json(species_config_path)
     displayed_states = ["Oregon"]
-    species_habitat = SpeciesHabitat.from_json(species_paths.habitat_model)
+    habitat = Habitat.from_json(species_paths.habitat_model)
     grid_spec = GridSpec.from_rasters(
-        regional_data_layers.northwest.gap_land_cover,
+        data_layers.gap_land_cover,
         preview_height=3500,
     )
     range_candidates = species_range_map(species_paths.species_range, grid_spec) if species_paths.species_range is not None else None
-    regional_habitat = species_habitat.northwest
-    regional_paths = regional_data_layers.northwest
 
     land_cover_candidates = gap_land_cover_map(
-        regional_habitat,
-        regional_paths,
+        habitat,
+        data_layers,
         grid_spec,
     )
 
     elevation_candidates = elevation_map(
-        regional_habitat,
-        regional_paths,
+        habitat,
+        data_layers,
         grid_spec,
     )
 
     hydrography_candidates = hydrography_map(
-        regional_habitat,
-        regional_paths,
+        habitat,
+        data_layers,
         grid_spec,
     )
 
@@ -559,7 +503,7 @@ def plot_species_habitat(species_config_path: Path, title: str, output_path: Pat
     )
     add_state_lines(
         ax,
-        regional_data_layers.state_boundaries,
+        data_layers.state_boundaries,
         displayed_states,
         true_habitat_map.bounds,
     )
@@ -570,6 +514,7 @@ def plot_species_habitat(species_config_path: Path, title: str, output_path: Pat
     )
     ax.set_title(title)
     ax.set_axis_off()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output_path, dpi=200, bbox_inches="tight")
     plt.close(fig)
     print(f"Saved {output_path}")
