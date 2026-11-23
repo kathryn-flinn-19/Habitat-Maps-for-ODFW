@@ -117,15 +117,11 @@ class RegionPaths:
 @dataclass(frozen=True)
 class RegionalDataLayers:
     northwest: RegionPaths = RegionPaths(
-        gap_land_cover=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/gap_map/northwest/lcgap_nw"),
-        elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/elevation/northwest/elev_nw"),
-        hydrography=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/hydrography/GAPHydroData/nw"),
+        gap_land_cover=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/oregon/gap_map/northwest/lcgap_nw.tif"),
+        elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/oregon/elevation/northwest/elev_nw_oregon.tif"),
+        hydrography=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/oregon/hydro"),
     )
-    southwest: RegionPaths = RegionPaths(
-        gap_land_cover=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/gap_map/southwest/lcgap_sw"),
-        elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/elevation/southwest/elev_sw"),
-    )
-    state_boundaries: Path = Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/boundaries/cb_2024_us_state_20m.shp")
+    state_boundaries: Path = Path("C:/Users/julia/Documents/Capstone/oregon_data/oregon/boundaries/oregon/oregon.shp")
 
 """
     parses a given yaml file to return the values it included for habitat_model,
@@ -361,7 +357,18 @@ def hydrography_map(habitat: RegionalHabitat, paths: RegionPaths, grid: GridSpec
     candidate = np.zeros((grid.height, grid.width), dtype=bool)
     candidate_mask = np.ones((grid.height, grid.width), dtype=bool)
     for layer_name, from_meters, into_meters in hydro_layers:
-        hydro = read_raster(paths.hydrography / layer_name, grid)
+        hydro = read_raster(paths.hydrography / f"{layer_name}.tif", grid)
+        print(f"\nHydrography layer: {layer_name}")
+        print("From buffer:", from_meters)
+        print("Into buffer:", into_meters)
+        print("Valid pixels:", hydro.data.count())
+        print("Unique values:", np.unique(hydro.data.compressed())[:30])
+
+        if from_meters is not None:
+            print("Exterior classes:", exterior_classes(float(from_meters)))
+
+        if into_meters is not None:
+            print("Interior classes:", interior_classes(float(into_meters)))
         valid = ~np.ma.getmaskarray(hydro.data)
         candidate_mask &= ~valid
 
@@ -508,64 +515,45 @@ def add_inaturalist_observations(
 def plot_species_habitat(species_config_path: Path, title: str, output_path: Path) -> None:
     regional_data_layers = RegionalDataLayers()
     species_paths = SpeciesPaths.from_json(species_config_path)
-    displayed_states = [
-        "Washington",
-        "Oregon",
-        "Idaho",
-        "California",
-        "Nevada",
-        "Utah",
-        "Arizona",
-        "New Mexico",
-        "Colorado",
-        "Wyoming",
-    ]
+    displayed_states = ["Oregon"]
     species_habitat = SpeciesHabitat.from_json(species_paths.habitat_model)
     grid_spec = GridSpec.from_rasters(
-        [
-            regional_data_layers.northwest.gap_land_cover,
-            regional_data_layers.southwest.gap_land_cover,
-        ],
+        regional_data_layers.northwest.gap_land_cover,
         preview_height=3500,
     )
     range_candidates = species_range_map(species_paths.species_range, grid_spec) if species_paths.species_range is not None else None
-    regional_maps = []
+    regional_habitat = species_habitat.northwest
+    regional_paths = regional_data_layers.northwest
 
-    # make combined maps for the sw and nw
-    for region in (Region.NORTHWEST, Region.SOUTHWEST):
-        if region == Region.NORTHWEST:
-            regional_habitat = species_habitat.northwest
-            regional_paths = regional_data_layers.northwest
-        elif region == Region.SOUTHWEST:
-            regional_habitat = species_habitat.southwest
-            regional_paths = regional_data_layers.southwest
+    land_cover_candidates = gap_land_cover_map(
+        regional_habitat,
+        regional_paths,
+        grid_spec,
+    )
 
-        land_cover_candidates = gap_land_cover_map(
-            regional_habitat,
-            regional_paths,
-            grid_spec,
-        )
-        elevation_candidates = elevation_map(
-            regional_habitat,
-            regional_paths,
-            grid_spec,
-        )
-        hydrography_candidates = hydrography_map(
-            regional_habitat,
-            regional_paths,
-            grid_spec,
-        )
-        regional_maps.append(
-            combine_candidate_maps(
-                land_cover_candidates,
-                elevation_candidates,
-                hydrography_candidates,
-                *(candidate for candidate in [range_candidates] if candidate is not None),
-            )
-        )
+    elevation_candidates = elevation_map(
+        regional_habitat,
+        regional_paths,
+        grid_spec,
+    )
 
-    # combine all maps into one
-    true_habitat_map = merge_regional_maps(*regional_maps)
+    hydrography_candidates = hydrography_map(
+        regional_habitat,
+        regional_paths,
+        grid_spec,
+    )
+
+    candidate_maps = [
+        land_cover_candidates,
+        elevation_candidates,
+        hydrography_candidates,
+    ]
+
+    if range_candidates is not None:
+        candidate_maps.append(range_candidates)
+
+    true_habitat_map = combine_candidate_maps(*candidate_maps)
+    
 
     cmap = ListedColormap(["white", "#C2CBEE"])
     cmap.set_bad("white")
