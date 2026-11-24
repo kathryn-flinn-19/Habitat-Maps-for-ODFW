@@ -77,13 +77,12 @@ class Habitat:
     - elevation
     - hydrography data
 """
-"""
 @dataclass(frozen=True)
 class DataLayers:
-    gap_land_cover=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/gap_map/lcgap_nw.tif"),
-    elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/elevation/elev_nw_oregon.tif"),
-    hydrography=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/hydro"),
-    state_boundaries: Path = Path("C:/Users/Super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/boundaries/oregon.shp")
+    gap_land_cover=Path("C:/Users/julia/OneDrive/Documents/capstone/Habitat-Maps-for-ODFW/starter_script/data/gap_map/lcgap_nw.tif")
+    elevation=Path("C:/Users/julia/OneDrive/Documents/capstone/Habitat-Maps-for-ODFW/starter_script/data/elevation/elev_nw_oregon.tif")
+    hydrography=Path("C:/Users/julia/OneDrive/Documents/capstone/Habitat-Maps-for-ODFW/starter_script/data/hydro")
+    state_boundaries= Path("C:/Users/julia/OneDrive/Documents/capstone/Habitat-Maps-for-ODFW/starter_script/data/boundaries/oregon.shp")
 
 """
     parses a given yaml file to return the values it included for habitat_model,
