@@ -80,8 +80,8 @@ class Habitat:
 """
 @dataclass(frozen=True)
 class DataLayers:
-    gap_land_cover=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/gap_map/northwest/lcgap_nw.tif"),
-    elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/elevation/northwest/elev_nw_oregon.tif"),
+    gap_land_cover=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/gap_map/lcgap_nw.tif"),
+    elevation=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/elevation/elev_nw_oregon.tif"),
     hydrography=Path("C:/Users/super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/hydro"),
     state_boundaries: Path = Path("C:/Users/Super/Desktop/capstone/Habitat-Maps-for-ODFW/starter_script/data/boundaries/oregon.shp")
 
