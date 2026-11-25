@@ -22,13 +22,8 @@
 - Troubleshooting: these commands may fail at first if you have not accepted the Anaconda terms of service. The error message will tell you what commands to run to accept the terms of service; simply copy and paste these into an Anaconda prompt, then restart your shell session.
 
 ## Download and set up required data
-- [Download the data for the USGS National Gap Land Cover in the Northwest and Southwest regions.](https://www.sciencebase.gov/catalog/item/5540e2d7e4b0a658d79395db)
-- Unzip these folders and put them into your `data/gap_map` folder.
-- [Download the data for USGS Hydrography data.](https://www.sciencebase.gov/catalog/item/5540eb44e4b0a658d7939624)
-- Unzip this folder and put it into your `data/hydrography` folder.
-- [Download the data for USGS elevation in the Northwest and Southwest regions.](https://www.sciencebase.gov/catalog/item/5540e111e4b0a658d79395d9)
-- Unzip these folders and put them into your `data/elevation` folder. 
-- Unzip the `hucs.zip` folder and keep it in `\starter_script`.
+- [Download the USGS raster data layers, clipped to Oregon.](https://drive.google.com/drive/u/0/folders/17yhUareEV8uK9SJkbQap_B0jqbHZdGXT)
+- Unzip this file and put the contents into your `data` folder.
 
 ## Set your data paths
 ### In script.py/RegionalDataLayers():
